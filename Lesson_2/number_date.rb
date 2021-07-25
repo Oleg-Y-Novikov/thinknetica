@@ -21,20 +21,22 @@ month = gets.chomp.to_i
 puts "enter the year:"
 year = gets.chomp.to_i
 
-d = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+d = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 i = 0
 while i < month - 1
-	date += d[i]
-	i += 1
+  date += d[i]
+  i += 1
 end
 
 if month > 2
-	if year % 4 != 0 || (year % 100 == 0 && year % 400 != 0)
-		puts "serial number of the date = #{date}"
-		puts "not a leap year"
-	else
-		puts "serial number of the date = #{date + 1}"
-		puts "leap year"
-	end
+  if year % 4 != 0 || (year % 100 == 0 && year % 400 != 0)
+    puts "serial number of the date = #{date}"
+    puts "not a leap year"
+  else
+    puts "serial number of the date = #{date + 1}"
+    puts "leap year"
+  end
+else
+  puts "serial number of the date = #{date}"
 end
 
