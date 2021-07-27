@@ -21,7 +21,7 @@ month = gets.chomp.to_i
 puts "enter the year:"
 year = gets.chomp.to_i
 
-d = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+d = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 i = 0
 while i < month - 1
   date += d[i]
