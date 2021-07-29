@@ -1,15 +1,16 @@
 #Заполнить массив числами фибоначчи до 100
 #Fn = Fn-1 + Fn-2
+
 array = []
 
-a = 0
-b = 1
-arr = []
-    
-while b < 100
-	a = b
-	b = a+b
-	array << a
+if array.empty?
+  array.push(0, 1)
+else
+  array.clear
+end
+
+while array[-1] + array[-2] < 100
+  array << array[-1] + array[-2]
 end
 
 print array

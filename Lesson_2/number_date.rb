@@ -7,8 +7,8 @@
 которые не определяют 2000 г. как високосный, и при использовании этих систем даты после 29 февраля 2000 г. 
 могут оказаться ошибочно сдвинуты на один день. Високосный год определяется по следующему правилу:
 
-Год високосный, если он делится на четыре без остатка, но если он делится на 100 без остатка, 
-это не високосный год. Однако, если он делится без остатка на 400, это високосный год. 
+Год високосный, если он делится на четыре без остатка, но если он делится на 100 без остатка,
+это не високосный год. Однако, если он делится без остатка на 400, это високосный год.
 Таким образом, 2000 г. является особым високосным годом, который бывает лишь раз в 400 лет.
 =end
 
@@ -22,21 +22,25 @@ puts "enter the year:"
 year = gets.chomp.to_i
 
 d = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+serial_number = d.take(month - 1).sum + date
+=begin
+Почти всегда можно обойтись без переменных-счетчиков. Например, у массива есть методы sum и take - с ними все решится в одну строку.
 i = 0
 while i < month - 1
   date += d[i]
   i += 1
 end
+=end
 
 if month > 2
   if year % 4 != 0 || (year % 100 == 0 && year % 400 != 0)
-    puts "serial number of the date = #{date}"
+    puts "serial number of the date = #{serial_number}"
     puts "not a leap year"
   else
-    puts "serial number of the date = #{date + 1}"
+    puts "serial number of the date = #{serial_number + 1}"
     puts "leap year"
   end
 else
-  puts "serial number of the date = #{date}"
+  puts "serial number of the date = #{serial_number}"
 end
-
