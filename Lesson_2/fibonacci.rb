@@ -7,6 +7,7 @@ if array.empty?
   array.push(0, 1)
 else
   array.clear
+  array.push(0, 1)
 end
 
 while array[-1] + array[-2] < 100
