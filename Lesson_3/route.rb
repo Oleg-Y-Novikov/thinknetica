@@ -9,35 +9,34 @@
 
 class Route
 
-  attr_reader :starting_station, :terminal_station, :all_station
+  attr_reader :all_station
   
   def initialize(starting_station, terminal_station)
-    @starting_station, @terminal_station = starting_station, terminal_station
     @all_station = []
-    @all_station.push(@starting_station, @terminal_station)
+    @all_station.push(starting_station, terminal_station)
   end
 
   def add_station(station)
     if @all_station.include?(station)
-      puts "Станция \"#{station.name}\" уже есть в маршруте \"#{@all_station.first.name} - #{@all_station.last.name}\" "
+      "Станция \"#{station.name}\" уже есть в маршруте \"#{@all_station.first.name} - #{@all_station.last.name}\" "
     else
       @all_station.insert(-2, station)
-      puts "Промежуточная cтанция \"#{station.name}\" добавлена в маршрут \"#{@all_station.first.name} - #{@all_station.last.name}\" "
+      "Промежуточная cтанция \"#{station.name}\" добавлена в маршрут \"#{@all_station.first.name} - #{@all_station.last.name}\" "
     end
   end
 
   def delete_station(station)
-    return puts "Этой станции нет в маршруте" unless @all_station.include?(station)
-    if station == @starting_station || station == @terminal_station
-      puts "Эту станцию нельзя удалить из маршрута!"
+    return "Этой станции нет в маршруте" unless @all_station.include?(station)
+    if station == @all_station.first || station == @all_station.last
+      "Эту станцию нельзя удалить из маршрута!"
     else
       @all_station.delete(station)
-      puts "Промежуточная станция #{station.name} удалена из маршрута."
+      "Промежуточная станция #{station.name} удалена из маршрута."
     end
   end
 
   def show_stations
-    @all_station.each { |station| puts "станция \"#{station.name}\"" }
+    @all_station.map { |station| "станция \"#{station.name}\"" }
   end
 
 end

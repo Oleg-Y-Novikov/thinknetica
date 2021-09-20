@@ -17,30 +17,33 @@ class Station
   end
 
   def arrival(train)
-    puts "На станцию прибыл поезд №#{train.number}. Время прибытия: #{Time.now.strftime("%Y-%m-%d")} #{Time.now.strftime("%H:%M")}"
     @trains_at_station << train
+    "На станцию прибыл поезд №#{train.number}. Время прибытия: #{Time.now.strftime("%Y-%m-%d")} #{Time.now.strftime("%H:%M")}"
   end
 
   def show_all_trains
-    puts "Всего поездов на станции: #{@trains_at_station.size}"
-    @trains_at_station.each { |train| puts train.number }
-  end
-
-  def show_type_train
-    cargo = @trains_at_station.select { |train| train.type == "cargo" }
-    puts "Грузовые: #{cargo.size}"
-    cargo.each { |train| puts "Номер: #{train.number}. Тип: #{train.type}"}
-    passenger = @trains_at_station.select { |train| train.type == "passenger" }
-    puts "Пассажирские: #{cargo.size}"
-    passenger.each { |train| puts "Номер: #{train.number}. Тип: #{train.type}"}
+    @trains_at_station.map { |train| "Номер: #{train.number}, тип: #{train.type}" }
   end
 
   def departure(train)
     if @trains_at_station.include?(train)
-      puts "Со станции отправляется поезд #{train.number}. Время отправления: #{Time.now.strftime("%Y-%m-%d")} #{Time.now.strftime("%H:%M")}"
       @trains_at_station.delete(train)
+      "Со станции отправляется поезд #{train.number}. Время отправления: #{Time.now.strftime("%Y-%m-%d")} #{Time.now.strftime("%H:%M")}"
     else
-      puts "Такого поезда нет на станции"
+      "Такого поезда нет на станции"
     end
   end
+
+=begin
+Давай заведем отдельный метод trains_by_type(type), который будет возвращать массив поездов определенного типа. 
+И метод count_trains_by_type(type), который будет их считать. Тогда мы уйдем от ввода-вывода к полноценной работе с данными
+=end
+  def trains_by_type(type)
+    @trains_at_station.select { |train| train.type == "#{type}" }
+  end
+
+  def count_trains_by_type(type)
+    @trains_at_station.count { |train| train.type == "#{type}" }
+  end
+
 end

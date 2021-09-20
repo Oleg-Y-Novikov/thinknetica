@@ -15,66 +15,64 @@
 class Train
 
   attr_accessor :speed
-  attr_reader :number, :type, :wagons
+  attr_reader :number, :type, :wagons, :current_station
 
   def initialize(number, type, wagons)
     @number = number
     @type = type
     @wagons = wagons
     @speed = 0
-    @route = nil
-    @current_station = nil
+    @route
+    @current_station
   end
 
   def add_wagons
     if @speed == 0
       @wagons += 1
-      puts "Вагон прицеплен, общее колличество вагонов - #{@wagons}"
+      "Вагон прицеплен, общее колличество вагонов - #{@wagons}"
     else
-      puts "Остановите поезд! Текущая скорость - #{@speed} км/ч"
+      "Остановите поезд! Текущая скорость - #{@speed} км/ч"
     end
   end
 
   def remove_wagons
-    return puts "Нет прицепленных вагонов!" if @wagons == 0
+    return "Нет прицепленных вагонов!" if @wagons == 0
     if @speed == 0
       @wagons -= 1
-      puts "Вагон отцеплен, общее колличество вагонов - #{@wagons}"
+      "Вагон отцеплен, общее колличество вагонов - #{@wagons}"
     else
-      puts "Остановите поезд! Текущая скорость - #{@speed} км/ч"
+      "Остановите поезд! Текущая скорость - #{@speed} км/ч"
     end
   end
 
   def set_route(route)
-    @current_station = route.starting_station
+    @current_station = route.all_station.first
     @route = route.all_station
-    puts "Поезд № #{@number} установлен на станцию #{@current_station.name}"
+    "Поезд № #{@number} установлен на станцию \"#{@current_station.name}\""
   end
 
+#Ой. Давай откажемся тут от ввода-вывода. Иначе как-то много обязанностей.
+#Кроме того, стоит сделать два отдельных метода - для движения вперед и движения назад
+
+  def go_ahead
+    return "Вы на конечной станции: \"#{@current_station.name}\", покиньте вагон." if @current_station == @route.last
+    @current_station = next_station
+    "Поезд прибыл на следующую станцию \"#{@current_station.name}\""
+  end
+
+  def go_back
+    return "Вы на начальной станции: \"#{@current_station.name}\", перемещение на предыдущую невозможно." if @current_station == @route.first
+    @current_station = previous_station
+    "Поезд прибыл на предыдущую станцию \"#{@current_station.name}\""
+  end
+
+  #нужны отдельные методы для предыдущей и следующей станций, и они должны возвращать объекты. Тогда их можно будет использовать в методах движения
   def next_station
-    puts "Введите: \"next\" - следующая станция, \"previous\" - предыдущая станция, \"stop\" - выйти"
-    loop do
-      direction = gets.chomp.downcase
-      break if direction == "stop"
-      case direction
-        when "next"
-          return puts "Вы на конечной станции: \"#{@current_station.name}\", покиньте вагон." if @current_station == @route.last
-          @current_station = @route[@route.index(@current_station) + 1]
-          puts "Поезд прибыл на следующую станцию \"#{@current_station.name}\""
-        when "previous"
-          return puts "Вы на начальной станции: \"#{@current_station.name}\", перемещение на предыдущую невозможно." if @current_station == @route.first
-          @current_station = @route[@route.index(@current_station) - 1]
-          puts "Поезд прибыл на предыдущую станцию \"#{@current_station.name}\""
-        else
-          puts "проверьте правильность ввода действия"
-      end
-    end
+    @current_station == @route.last ? @current_station : @route[@route.index(@current_station) + 1]
   end
 
-  def station_list
-    @current_station == @route.last ? next_station = "Депо" : next_station = @route[@route.index(@current_station) + 1]
-    @current_station == @route.first ? previous_station = @current_station.name : previous_station = @route[@route.index(@current_station) - 1]
-    puts "Текущая станция: #{@current_station.name}. Следующая станция: #{next_station.name}. Предыдущая станция: #{previous_station}"
+  def previous_station
+    @current_station == @route.first ? @current_station : @route[@route.index(@current_station) - 1]
   end
 
 end
