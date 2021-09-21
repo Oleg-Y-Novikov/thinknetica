@@ -22,57 +22,38 @@ class Train
     @type = type
     @wagons = wagons
     @speed = 0
-    @route
-    @current_station
   end
 
   def add_wagons
-    if @speed == 0
-      @wagons += 1
-      "Вагон прицеплен, общее колличество вагонов - #{@wagons}"
-    else
-      "Остановите поезд! Текущая скорость - #{@speed} км/ч"
-    end
+    @wagons += 1 if @speed == 0
   end
 
   def remove_wagons
-    return "Нет прицепленных вагонов!" if @wagons == 0
-    if @speed == 0
-      @wagons -= 1
-      "Вагон отцеплен, общее колличество вагонов - #{@wagons}"
-    else
-      "Остановите поезд! Текущая скорость - #{@speed} км/ч"
-    end
+    return if @wagons == 0
+    @wagons -= 1 if @speed == 0
   end
 
   def set_route(route)
     @current_station = route.all_station.first
-    @route = route.all_station
-    "Поезд № #{@number} установлен на станцию \"#{@current_station.name}\""
+    @route = route
   end
 
-#Ой. Давай откажемся тут от ввода-вывода. Иначе как-то много обязанностей.
-#Кроме того, стоит сделать два отдельных метода - для движения вперед и движения назад
-
   def go_ahead
-    return "Вы на конечной станции: \"#{@current_station.name}\", покиньте вагон." if @current_station == @route.last
+    return unless next_station
     @current_station = next_station
-    "Поезд прибыл на следующую станцию \"#{@current_station.name}\""
   end
 
   def go_back
-    return "Вы на начальной станции: \"#{@current_station.name}\", перемещение на предыдущую невозможно." if @current_station == @route.first
+    return unless previous_station
     @current_station = previous_station
-    "Поезд прибыл на предыдущую станцию \"#{@current_station.name}\""
   end
 
-  #нужны отдельные методы для предыдущей и следующей станций, и они должны возвращать объекты. Тогда их можно будет использовать в методах движения
   def next_station
-    @current_station == @route.last ? @current_station : @route[@route.index(@current_station) + 1]
+    @route.all_station[@route.all_station.index(@current_station) + 1] if @current_station != @route.all_station.last
   end
 
   def previous_station
-    @current_station == @route.first ? @current_station : @route[@route.index(@current_station) - 1]
+    @route.all_station[@route.all_station.index(@current_station) - 1] if @current_station != @route.all_station.first
   end
 
 end

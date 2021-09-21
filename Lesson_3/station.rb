@@ -9,7 +9,7 @@
 
 class Station
 
-  attr_reader :name
+  attr_reader :name, :trains_at_station
 
   def initialize(name)
     @name = name
@@ -17,33 +17,20 @@ class Station
   end
 
   def arrival(train)
+    return if @trains_at_station.include?(train)
     @trains_at_station << train
-    "На станцию прибыл поезд №#{train.number}. Время прибытия: #{Time.now.strftime("%Y-%m-%d")} #{Time.now.strftime("%H:%M")}"
-  end
-
-  def show_all_trains
-    @trains_at_station.map { |train| "Номер: #{train.number}, тип: #{train.type}" }
   end
 
   def departure(train)
-    if @trains_at_station.include?(train)
-      @trains_at_station.delete(train)
-      "Со станции отправляется поезд #{train.number}. Время отправления: #{Time.now.strftime("%Y-%m-%d")} #{Time.now.strftime("%H:%M")}"
-    else
-      "Такого поезда нет на станции"
-    end
+    @trains_at_station.delete(train) if @trains_at_station.include?(train)
   end
 
-=begin
-Давай заведем отдельный метод trains_by_type(type), который будет возвращать массив поездов определенного типа. 
-И метод count_trains_by_type(type), который будет их считать. Тогда мы уйдем от ввода-вывода к полноценной работе с данными
-=end
   def trains_by_type(type)
-    @trains_at_station.select { |train| train.type == "#{type}" }
+    @trains_at_station.select { |train| train.type == type }
   end
 
   def count_trains_by_type(type)
-    @trains_at_station.count { |train| train.type == "#{type}" }
+    @trains_at_station.count { |train| train.type == type }
   end
 
 end
