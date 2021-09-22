@@ -18,6 +18,7 @@ class Station
 
   def arrival(train)
     return if @trains_at_station.include?(train)
+    
     @trains_at_station << train
   end
 

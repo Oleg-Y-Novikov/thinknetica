@@ -18,11 +18,13 @@ class Route
 
   def add_station(station)
     return if @all_station.include?(station)
+    
     @all_station.insert(-2, station)
   end
 
   def delete_station(station)
     return unless !(station == @all_station.first || station == @all_station.last) && @all_station.include?(station)
+    
     @all_station.delete(station)
   end
 
