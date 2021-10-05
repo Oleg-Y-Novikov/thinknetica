@@ -9,7 +9,6 @@
 
 class Route
   include InstanceCounter
-  @count_instances = 0
 
   attr_reader :all_station
   

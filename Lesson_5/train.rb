@@ -2,7 +2,6 @@ class Train
   include Manufacturer
   include InstanceCounter
   
-  @count_instances = 0
   @@train = []
 
   def self.find(number)
