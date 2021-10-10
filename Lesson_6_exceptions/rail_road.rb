@@ -234,9 +234,6 @@ class RailRoad
         Route.all_routes.each_key { |name| puts name }
       end
     end
-    rescue => error
-      puts error.message
-      retry 
     clear
   end
 
@@ -300,15 +297,10 @@ class RailRoad
       puts "Введите номер поезда, для выхода введите \"exit\""
       number = gets.chomp
       break if number == "exit"
-      begin
-        puts "Введите тип вагона который хотите добавить: \"passenger\" - пассажирский; \"cargo\" - грузовой"
-        wagon_type = gets.chomp
-        Wagon.valid?(wagon_type)
-      rescue RuntimeError => error
-        puts error.message
-        retry
-      end 
-      break puts "Нет свободных вагонов данного типа, создайте их" if Wagon.get_wagon(wagon_type).nil?
+      puts "Введите тип вагона который хотите добавить: \"passenger\" - пассажирский; \"cargo\" - грузовой"
+      wagon_type = gets.chomp
+      return puts "Нет свободных вагонов данного типа, создайте их" if Wagon.get_wagon(wagon_type).nil?
+      
       if Train.get_train(number)
         if Train.get_train(number).add_wagon(Wagon.get_wagon(wagon_type))
           Wagon.all_wagons.delete(Wagon.get_wagon(wagon_type))
@@ -383,7 +375,7 @@ class RailRoad
         CargoWagon.new(wagon_type)
         puts "Грузовой вагон успешно создан"
       else 
-        Wagon.send :validate!, wagon_type
+        Wagon.new(wagon_type)
       end
       rescue RuntimeError => error
         puts error.message
@@ -422,8 +414,6 @@ class RailRoad
       puts "Введите номер поезда, для выхода введите - \"exit\""
       number = gets.chomp
       break if number == "exit"
-      #puts "Введите тип поезда: \"passenger\" - пассажирский; \"cargo\" - грузовой"
-      #type = gets.chomp
       if Train.get_train(number)
         return puts "Сначала установите маршрут для данного поезда" if Train.get_train(number).route.nil?
 

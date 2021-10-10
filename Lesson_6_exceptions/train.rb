@@ -16,31 +16,23 @@ class Train
     def get_train(number)
       @@trains.find { |train| train.number == number }
     end
-
-    def valid?(number)
-      validate!(number)
-      true
-    rescue
-      false
-    end
-
-    protected
-
-    def validate!(number)
-      raise "Номер поезда не может быть пустым" if number.empty?
-      raise "Номер поезда имеет недопустимый формат" if number !~ NUMBER_FORMAT
-      raise "Поезд с таким номером уже существует" if get_train(number)
-    end
   end
 
   def initialize(number)
     @type = "no type"
-    self.class.send :validate!, number
     @number = number
+    validate!
     @wagons = []
     @speed = 0
     @@trains << self
     register_instance
+  end
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
   end
 
   def amount_wagons
@@ -93,7 +85,6 @@ class Train
     @route.all_station[@route.all_station.index(@current_station) - 1] if @current_station != @route.all_station.first
   end
 
-  # методы не являются интерфейсом класса, служат для проверки и построения верной логики в программе
   protected
 
   def train_stopped?
@@ -106,6 +97,12 @@ class Train
 
   def add_wagon!(wagon)
     @wagons << wagon if train_stopped? && correct_type_wagon?(wagon)
+  end
+
+  def validate!
+    raise "Номер поезда не может быть пустым" if number.empty?
+    raise "Номер поезда имеет недопустимый формат" if number !~ NUMBER_FORMAT
+    raise "Поезд с таким номером уже существует" if Train.get_train(number)
   end
 
 end

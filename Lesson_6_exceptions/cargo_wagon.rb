@@ -1,6 +1,6 @@
 class CargoWagon < Wagon
   protected
-  def self.type_format
+  def type_format
     /^cargo$/
   end
 end

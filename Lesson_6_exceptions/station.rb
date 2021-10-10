@@ -1,12 +1,3 @@
-=begin
-  Класс Station (Станция):
-  Имеет название, которое указывается при ее создании
-  Может принимать поезда (по одному за раз)
-  Может возвращать список всех поездов на станции, находящиеся в текущий момент
-  Может возвращать список поездов на станции по типу (см. ниже): кол-во грузовых, пассажирских
-  Может отправлять поезда (по одному за раз, при этом, поезд удаляется из списка поездов, находящихся на станции).
-=end
-
 class Station
   include InstanceCounter
   
@@ -21,32 +12,23 @@ class Station
     def get_station(name)
       @@stations.find { |station| station.name == name }
     end
-
-    def valid?(name)
-      validate!(name)
-      true
-    rescue
-      false
-    end
-
-    protected
-
-    def validate!(name)
-      raise "Название станции не можнет быть пустым" if name.empty?
-      raise "Название станции имеет недопустимый формат" if name !~ NAME_FORMAT
-      raise "Название станции должено быть не более 20 символов" if name.length > 20
-      raise "Станция #{name} уже существует" if get_station(name)
-    end
   end
 
   attr_reader :name, :trains_at_station
 
   def initialize(name)
-    self.class.send :validate!, name
     @name = name
+    validate!
     @trains_at_station = []
     @@stations << self
     register_instance
+  end
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
   end
 
   def arrival(train)
@@ -65,6 +47,15 @@ class Station
 
   def count_trains_by_type(type)
     @trains_at_station.count { |train| train.type == type }
+  end
+
+  protected
+
+  def validate!
+    raise "Название станции не можнет быть пустым" if name.empty?
+    raise "Название станции имеет недопустимый формат" if name !~ NAME_FORMAT
+    raise "Название станции должено быть не более 20 символов" if name.length > 20
+    raise "Станция #{name} уже существует" if Station.get_station(name)
   end
 
 end
