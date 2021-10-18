@@ -2,37 +2,21 @@ class RailRoad
   attr_reader :choice
 
   def info
-    return puts "Нет ни одной станции" if Station.all_stations.empty? 
-
-    wagon_info = lambda do |wagons|
-      wagons.each do |wagon|
-        if wagon.type == "cargo"
-          puts "   Вагон № #{wagon.number}, тип - #{wagon.type}, свободный объем - #{wagon.free_volume}м3, занятый объем - #{wagon.occupied_volume}м3"
-        elsif wagon.type == "passenger"
-          puts "   Вагон № #{wagon.number}, тип - #{wagon.type}, свободных мест - #{wagon.vacant_seats}, занятых мест - #{wagon.occupied_seats}"
-        else
-          puts "   Вагон № #{wagon.number}, тип - #{wagon.type}"
-        end
-      end
-    end
-
-    train_info = lambda do |trains_at_station|
-      trains_at_station.each do |train|
-      puts "Поезд № #{train.number}, тип - #{train.type}, вагонов в составе - #{train.amount_wagons}"
-      train.train_wagons_info(wagon_info)
-      end
-    end
+    return puts "Нет ни одной станции" if Station.all_stations.empty?
 
     puts "СПИСОК СТАНЦИЙ И ПОЕЗДОВ НА НИХ"
     puts
-    Station.all_stations.each do |station|
-      puts "Станция - #{station.name}; поездов на станции - #{station.trains_at_station.size}"
-      puts
+    Station.all_stations.each do |station| puts station.station_info
       if station.trains_at_station.size != 0
-        station.train_at_station_info(train_info)
-        puts
+        station.each_trains do |train| 
+          puts train.train_info
+          train.each_wagons { |wagon| puts wagon.wagon_info }
+          puts
+        end
       end
+      puts
     end
+    puts
   end
 
   def run
@@ -75,10 +59,11 @@ class RailRoad
         all_created_objects
       when 4
         info
-      when 0
+      when "exit"
         exit
       else
-        puts "Введены не корректрые данные!"
+        puts "Неизвестная команда!"
+        puts
       end
     end
   end
@@ -94,7 +79,7 @@ class RailRoad
     puts "Введите 2, если хотите произвести операции с созданными объектами"
     puts "Введите 3, если хотите вывести текущие данные о объектах"
     puts "Введите 4, если хотите вывести информацию о всех станциях, поездах на них и о вагонах"
-    puts "Введите 0, если хотите закончить программу"
+    puts "Введите exit, если хотите закончить программу"
   end
   
   def menu_1

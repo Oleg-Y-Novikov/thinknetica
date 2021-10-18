@@ -31,8 +31,12 @@ class Station
     false
   end
 
-  def train_at_station_info(block)
-    block.call(trains_at_station)
+  def each_trains
+    @trains_at_station.each { |train| yield train } if block_given?
+  end
+
+  def station_info
+    "Станция - #{self.name}; поездов на станции - #{self.trains_at_station.size}"
   end
 
   def arrival(train)

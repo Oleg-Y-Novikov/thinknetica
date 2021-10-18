@@ -20,6 +20,10 @@ class CargoWagon < Wagon
     @total_volume - @occupied_volume
   end
 
+  def wagon_info
+    "   Вагон № #{self.number}, тип - #{self.type}, свободный объем - #{self.free_volume}м3, занятый объем - #{self.occupied_volume}м3"
+  end
+
   protected
 
   def type_format

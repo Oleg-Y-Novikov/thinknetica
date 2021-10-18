@@ -20,6 +20,10 @@ class PassengerWagon < Wagon
     @number_of_seats - @occupied_seats
   end
 
+  def wagon_info
+    "   Вагон № #{self.number}, тип - #{self.type}, свободных мест - #{self.vacant_seats}, занятых мест - #{self.occupied_seats}"
+  end
+
   protected
 
   def type_format

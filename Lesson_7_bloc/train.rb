@@ -35,8 +35,12 @@ class Train
     false
   end
 
-  def train_wagons_info(block)
-    block.call(@wagons)
+  def each_wagons
+    @wagons.each { |wagon| yield wagon } if block_given?
+  end
+
+  def train_info
+    "Поезд № #{self.number}, тип - #{self.type}, вагонов в составе - #{self.amount_wagons}"
   end
 
   def get_wagon(number)
