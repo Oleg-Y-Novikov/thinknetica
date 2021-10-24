@@ -1,0 +1,19 @@
+AllCops:
+  Exclude:
+    - user_interface.rb
+    - main.rb
+
+Style/StringLiterals:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: true
+  Max: 100
+
+Metrics/MethodLength:
+  Enabled: true
+  Max: 15
+
+Style/Documentation:
+  Enabled: false
+
